@@ -23,14 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $email = $_POST['email'] ?? '';
     $password = hash('sha256', $_POST['password'] ?? '');
-    $query = "SELECT CLI_NUM FROM rap_client WHERE CLI_COURRIEL = ? AND CLI_PASSWORD = ?";
+    $query = "SELECT CLI_NUM FROM RAP_CLIENT WHERE CLI_COURRIEL = ? AND CLI_PASSWORD = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param('ss', $email, $password);
     $stmt->execute();
     $result = $stmt->get_result();
     $count = $result->fetch_row()[0];
     if (isset($count) && !empty($count)) {
-        $query = "INSERT INTO rap_oauth_clients(rap_oauth_clients.CLI_NUM, rap_oauth_clients.CLIENT_ID, rap_oauth_clients.ACCESS_TOKEN, rap_oauth_clients.REFRESH_TOKEN, rap_oauth_clients.DATE_CREATION) VALUES(?, ?,?,?,NOW()) ";
+        $query = "INSERT INTO RAP_OAUTH_CLIENTS(CLI_NUM,  CLIENT_ID, ACCESS_TOKEN, REFRESH_TOKEN, DATE_CREATION) VALUES(?, ?,?,?,NOW()) ";
         $stmt = $conn->prepare($query);
         $generateAccessToken = generateAccessToken($count);
         $generateRandomCharString = generateRandomCharString(256);

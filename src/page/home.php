@@ -13,7 +13,7 @@ $conn = getConn();
                 Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
                 quasi. In deleniti eaque aut repudiandae et a id nisi.
             </p>
-            <button class="btn btn-primary">Get Started</button>
+            <a href="/commande/index" class="btn btn-primary">Get Started</a>
         </div>
     </div>
 </div>
@@ -57,7 +57,7 @@ $conn = getConn();
             </svg>
         </div>
         <div class="stat-title">Nombres d'Utilisateurs</div>
-        <div class="stat-value"><?php echo $conn->query("SELECT COUNT(*) - 1 FROM rap_client ")->fetch_row()[0]?></div>
+        <div class="stat-value"><?php echo $conn->query("SELECT COUNT(*) - 1 FROM RAP_CLIENT ")->fetch_row()[0]?></div>
         <div class="stat-desc">All of time</div>
     </div>
 

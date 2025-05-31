@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql80
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: RAP
+    volumes:
+      - ./sql/mysql_sql.sql:/docker-entrypoint-initdb.d/mysql_sql.sql:ro
+    ports:
+      - "3306:3306"
+    networks:
+        - rap_network
+
+  apache_php:
+    image: php:8.0-apache
+    container_name: apache_php80
+    environment:
+      DB_SERVER: localhost
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: RAP
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - "8080:80"
+    networks:
+      - rap_network
+    build:
+      context: src
+      dockerfile: Dockerfile
+
+
+networks:
+  rap_network:
+      driver: bridge

@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['avatar'])) {
   SUM(APP_QUANTITE) AS PRODUIT, 
   CONCAT(COM_DATE, ' ', TIME(COM_HEURE_RECUP)) AS DATE
 FROM 
-  RAP_Commande 
-  JOIN RAP_Restaurant USING (RES_NUM) 
-  JOIN RAP_Appartenir USING (RES_NUM, COM_NUM)
+  RAP_COMMANDE 
+  JOIN RAP_RESTAURANT USING (RES_NUM) 
+  JOIN RAP_APPARTENIR USING (RES_NUM, COM_NUM)
 WHERE CLI_NUM = ?
 GROUP BY 
   CLI_NUM, COM_NUM, ADRESSE, COM_PRIX_TOTAL, DATE
@@ -80,7 +80,7 @@ LIMIT 0,100;";
                 <p class="text-xl text-primary">' . $COM_DATE . '</p>
             </div>
             <div>
-                <a href="/commande?id='.$COM_NUM.'" class="btn btn-primary">Plus d\'informations</a>
+                <a href="/commande/view?id='.$COM_NUM.'" class="btn btn-primary">Plus d\'informations</a>
             </div>
         </div>';
                     } else {
@@ -142,7 +142,7 @@ LIMIT 0,100;";
                         </script>
                     </div>
                     <div>
-                <a href="/commande?id='.$COM_NUM.'" class="btn btn-primary">Plus d\'informations</a>
+                <a href="/commande/view?id='.$COM_NUM.'" class="btn btn-primary">Plus d\'informations</a>
             </div>
                 </div>';
                     }

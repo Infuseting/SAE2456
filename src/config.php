@@ -25,7 +25,7 @@ function getConn()
 function isValidToken($token) {
     $conn = getConn(); // Get the database connection
 
-    $query = "SELECT COUNT(*) FROM rap_oauth_clients WHERE ACCESS_TOKEN = ?"; // Replace 'users' with your table name
+    $query = "SELECT COUNT(*) FROM RAP_OAUTH_CLIENTS WHERE ACCESS_TOKEN = ?"; // Replace 'users' with your table name
     $stmt = $conn->prepare($query);
     $stmt->bind_param('s', $token);
     $stmt->execute();
@@ -45,7 +45,7 @@ function isValidToken($token) {
 function getUserInfo($token) {
     $conn = getConn(); // Get the database connection
 
-    $query = "SELECT * FROM rap_client WHERE cli_num = (SELECT CLI_NUM FROM rap_oauth_clients WHERE ACCESS_TOKEN = ?)";
+    $query = "SELECT * FROM RAP_CLIENT WHERE cli_num = (SELECT CLI_NUM FROM RAP_OAUTH_CLIENTS WHERE ACCESS_TOKEN = ?)";
     $stmt = $conn->prepare($query);
     $stmt->bind_param('s', $token);
     $stmt->execute();
