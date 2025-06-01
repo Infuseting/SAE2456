@@ -28,13 +28,13 @@ function getRouter() {
 }
 
 ?>
-<?php if (strpos($router, 'error') === false  && strpos($router, 'commande/index') === false && strpos($router, 'login') === false && strpos($router, 'register') === false ) : ?>
+<?php if (strpos($router, 'error') === false   && strpos($router, 'login') === false && strpos($router, 'register') === false ) : ?>
 <?php include 'component/navbar.php'; ?>
 <?php endif; ?>
 <main class="min-h-screen">
     <?php include 'page' . $router . '.php'; ?>
 
 </main>
-<?php if (strpos($router, 'error') === false && strpos($router, 'login') === false && strpos($router, 'commande/index') === false && strpos($router, 'register') === false  ): ?>
+<?php if (strpos($router, 'error') === false && strpos($router, 'login') === false && strpos($router, 'register') === false  ): ?>
     <?php include 'component/footer.php'; ?>
 <?php endif; ?>

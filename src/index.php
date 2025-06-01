@@ -15,11 +15,13 @@ session_start();
 
 </head>
 <body>
+<script src="/assets/script/cookies.js"></script>
 <div class="min-h-full overflow-x-hidden overflow-hidden" >
     <?php include 'router.php' ?>
 </div>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="/assets/script/main.js"></script>
 <script>
     AOS.init();
 </script>
