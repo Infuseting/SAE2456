@@ -1,61 +1,11 @@
 const buyButtons = document.querySelectorAll('.btn.btn-primary.buy');
-
+const soloCommande = document.getElementById("solo_part");
+const menuCommande = document.getElementById("menu_part");
 buyButtons.forEach(button => {
     buyButtonsFunc(button);
 });
 
 function buyButtonsFunc(button) {
-    const name = button.parentElement.parentElement.querySelector('.name').textContent;
-    if (CartManager.hasItem(name)) {
-        const item = CartManager.getItem(name);
-        const parent = button.parentElement;
-        button.remove();
-        parent.innerHTML += `
-            <div class="btn-group flex flex-row">
-                <button class="btn btn-error remove-from-cart mx-1">-</button>
-                <input type="text" class="input w-10 h-10 px-1" />
-                <button class="btn btn-success add-to-cart mx-1">+</button>
-            </div>`;
-        const input = parent.querySelector('input');
-        input.value = item.quantity;
-        input.addEventListener('change', () => {
-            if (input.value < 1) {
-                const el = parent.querySelector('.btn-group')
-                el.remove();
-                parent.innerHTML += `<button onclick="buyButtons(this)" class="btn btn-primary buy">Buy Now</button>`;
-                CartManager.removeItem(name);
-                buyButtonsFunc(parent.querySelector('.btn.btn-primary.buy'));
-            }
-            item.quantity = parseInt(input.value);
-            CartManager.removeItem(name);
-            CartManager.addItem(item);
-            document.getElementById('cart_number_item').textContent = CartManager.getNumberInCart();
-        });
-        parent.querySelector('.add-to-cart').addEventListener('click', () => {
-            input.value = parseInt(input.value) + 1;
-            item.quantity = parseInt(input.value);
-            CartManager.removeItem(name);
-            CartManager.addItem(item);
-            document.getElementById('cart_number_item').textContent = CartManager.getNumberInCart();
-        });
-        parent.querySelector('.remove-from-cart').addEventListener('click', () => {
-            input.value = parseInt(input.value) - 1;
-            if (input.value < 1) {
-                const el = parent.querySelector('.btn-group')
-                el.remove();
-                parent.innerHTML += `<button class="btn btn-primary buy">Buy Now</button>`;
-                CartManager.removeItem(name);
-                buyButtonsFunc(parent.querySelector('.btn.btn-primary.buy'));
-                document.getElementById('cart_number_item').textContent = CartManager.getNumberInCart();
-            } else {
-                item.quantity = parseInt(input.value);
-                CartManager.removeItem(name);
-                CartManager.addItem(item);
-                document.getElementById('cart_number_item').textContent = CartManager.getNumberInCart();
-            }
-        });
-
-    }
     button.addEventListener('click', () => {
         onClickBuy(button);
     });
@@ -63,18 +13,84 @@ function buyButtonsFunc(button) {
 function onClickBuy(button) {
     const name = button.parentElement.parentElement.querySelector('.name').textContent;
     const price = button.parentElement.parentElement.querySelector('.price').textContent.replace('€', '').trim();
-    let quantity = 1;
-    if (CartManager.hasItem(name)) {
-        const item = CartManager.getItem(name);
-        quantity += item.quantity;
-        CartManager.removeItem(name);
+    if (button.classList.contains('menu_commande')) {
+        document.getElementById("menu_or_not").showModal();
+        soloCommande.onclick = () => {
+            document.getElementById("menu_or_not").close();
+            addItem({"name": name, "price": parseFloat(price)});
+            document.getElementById('cart_number_item').textContent = CartManager.getNumberInCart();
+        }
+        menuCommande.onClick = () => {
+            document.getElementById("menu_or_not").close();
+            newMenu(name, parseFloat(price));
+        }
+    } else {
+        addItem({"name": name, "price": parseFloat(price)});
+        document.getElementById('cart_number_item').textContent = CartManager.getNumberInCart();
     }
-    const item = {
-        name: name,
-        price: parseFloat(price),
+
+
+    //const name = button.parentElement.parentElement.querySelector('.name').textContent;
+    //const price = button.parentElement.parentElement.querySelector('.price').textContent.replace('€', '').trim();
+    //let quantity = 1;
+    //if (CartManager.hasItem(name)) {
+    //    const item = CartManager.getItem(name);
+    //    quantity += item.quantity;
+    //    CartManager.removeItem(name);
+    //}
+    //const item = {
+    //    name: name,
+    //    price: parseFloat(price),
+    //    quantity: quantity
+    //};
+    //CartManager.addItem(item);
+    //document.getElementById('cart_number_item').textContent = CartManager.getNumberInCart();µ
+}
+
+
+function addItem(json) {
+    let quantity = 1;
+    let cartItem = {
+        item: json,
         quantity: quantity
-    };
-    CartManager.addItem(item);
+    }
+    if (CartManager.hasItem(json)) {
+        cartItem = CartManager.getItem(json);
+        quantity += cartItem.quantity;
+        CartManager.removeItem(json);
+    }
+    cartItem.quantity = quantity;
+    CartManager.addItem(cartItem);
     document.getElementById('cart_number_item').textContent = CartManager.getNumberInCart();
-    buyButtonsFunc(button);
+}
+
+const MenuManager = {
+    menu: [],
+    loadMenu: (jsonMenu) => {
+        try {
+            MenuManager.menu = JSON.parse(jsonMenu);
+        } catch (error) {
+            console.error("Invalid JSON format:", error);
+        }
+    },
+    getMenu: () => {
+        return MenuManager.menu;
+    },
+
+    addItem: (item) => {
+        MenuManager.menu.push(item);
+    },
+
+    removeItem: (itemName) => {
+        MenuManager.menu = MenuManager.menu.filter(item => item.name !== itemName);
+    },
+
+    findItem: (itemName) => {
+        return MenuManager.menu.find(item => item.name === itemName) || null;
+    }
+};
+
+
+function newMenu(name, price) {
+
 }

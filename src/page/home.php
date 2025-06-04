@@ -160,9 +160,9 @@ $conn = getConn();
                 </div>
                 <p class="text-justify"><i>"The Creamy Alfredo Pasta is out of this world! It's my go-to comfort food now. The app is super easy to use, and delivery is always on time."</i></p>
                 <div class="flex flex-row items-center mt-4">
-                    <img src="/assets/img/avis/client1.jpg" alt="Client 1" class="w-12 h-12 rounded-full mr-3">
+                    <img src="/assets/img/avis/client1.png" alt="Client 1" class="w-12 h-12 rounded-full mr-3">
                     <div>
-                        <h2 class="font-bold"Frederic Lutensky</h2>
+                        <h2 class="font-bold">Frederic Lutensky</h2>
                         <p class="text-sm text-gray-500">Caen Mayor</p>
                     </div>
                 </div>
@@ -185,7 +185,7 @@ $conn = getConn();
                 </div>
                 <p class="text-justify"><i>"Finally, a takeout app that understands quality and convenience. The Spicy Beef Tacos are amazing, and I love the quick order process."</i></p>
                 <div class="flex flex-row items-center mt-4">
-                    <img src="/assets/img/avis/client2.jpg" alt="Client 2" class="w-12 h-12 rounded-full mr-3">
+                    <img src="/assets/img/avis/client2.png" alt="Client 2" class="w-12 h-12 rounded-full mr-3">
                     <div>
                         <h2 class="font-bold">Pierre de la house</h2>
                         <p class="text-sm text-gray-500">Farmer</p>
@@ -210,7 +210,7 @@ $conn = getConn();
                 </div>
                 <p class="text-justify"><i>"Takeout Express has revolutionized our family dinners! The food is always fresh, delicious, and arrives so quickly. Highly recommend their Crispy Fried Chicken!"</i></p>
                 <div class="flex flex-row items-center mt-4">
-                    <img src="/assets/img/avis/client3.jpg" alt="Client 3" class="w-12 h-12 rounded-full mr-3">
+                    <img src="/assets/img/avis/client3.png" alt="Client 3" class="w-12 h-12 rounded-full mr-3">
                     <div>
                         <h2 class="font-bold">Alice Johnson</h2>
                         <p class="text-sm text-gray-500">Food Blogger</p>

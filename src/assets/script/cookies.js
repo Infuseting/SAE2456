@@ -32,16 +32,16 @@ const CartManager = {
     },
     hasItem: (itemName) => {
         let cart = JSON.parse(CookieManager.getCookie('cart') || '[]');
-        return cart.some(item => item.name === itemName);
+        return cart.some(item => item.item === itemName);
     },
     removeItem(itemName) {
         let cart = JSON.parse(CookieManager.getCookie('cart') || '[]');
-        cart = cart.filter(item => item.name !== itemName);
+        cart = cart.filter(item => item.item !== itemName);
         CookieManager.setCookie('cart', JSON.stringify(cart), 7);
     },
     getItem(itemName) {
         let cart = JSON.parse(CookieManager.getCookie('cart') || '[]');
-        return cart.find(item => item.name === itemName) || null;
+        return cart.find(item => item.item === itemName) || null;
     },
     getNumberInCart: () => {
         let cart = JSON.parse(CookieManager.getCookie('cart') || '[]');
