@@ -106,7 +106,7 @@ function getFoodDescriptions($name) {
         </div>
     </div>
     <div class="flex w-full flex-col pt-4">
-        <div class="flex flex-row">
+        <div class="flex flex-row filterBtns">
             <button class="btn btn-primary mx-2">All</button>
             <button class="btn mx-2">Pizza</button>
             <button class="btn mx-2">Kebab</button>
@@ -115,7 +115,7 @@ function getFoodDescriptions($name) {
             <button class="btn mx-2">Accompagnements</button>
         </div>
         <div class="divider"></div>
-        <div class="flex flex-col">
+        <div class="flex flex-col food_commande">
             <div class="my-2" id="pizza_part">
                 <h1 class="bold text-3xl">Pizza</h1>
                 <div  class="flex flex-row flex-nowrap overflow-x-auto mt-2" style="scrollbar-width: none; -ms-overflow-style: none;">
@@ -260,7 +260,7 @@ WHERE rn = 1;
                         $pizzaMultipleSize = $row['PLA_MULT_TAILLE'] == 1? 'multiple-size' : '';
                         echo '<div class="card bg-base-100 min-w-96 max-w-96 shadow-sm mx-4">
                         <figure>
-    <div class="relative">µ
+    <div class="relative">
         <img
             src="/assets/img/food/boisson/'. str_replace(' ', '_', $pizzaName) . '.png"
             alt="'. $pizzaName .'"  />

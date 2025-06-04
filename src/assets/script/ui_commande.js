@@ -92,5 +92,33 @@ const MenuManager = {
 
 
 function newMenu(name, price) {
-
+}
+document.addEventListener('DOMContentLoaded', () => {
+    const filterBtns = document.querySelector('.filterBtns');
+    if (filterBtns && filterBtns.children) {
+        Array.from(filterBtns.children).forEach(btn => {
+            btn.addEventListener('click', () => {
+                Array.from(filterBtns.children).forEach(btn => btn.classList.remove('btn-primary'));
+                btn.classList.add('btn-primary');
+                const filter = btn.getAttribute('data-filter');
+                filterFunc(btn.textContent.toLowerCase());
+            });
+        });
+    }
+});
+function filterFunc(filter) {
+    if (filter === 'all') {
+        Array.from(document.querySelector('.food_commande').children).forEach(item => {
+            item.style.display = 'block';
+        });
+    } else {
+        Array.from(document.querySelector('.food_commande').children).forEach(item => {
+            console.log(item.id + " " + filter + '_part');
+            if (item.id == filter + '_part') {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
 }
