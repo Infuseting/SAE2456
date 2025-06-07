@@ -1,10 +1,37 @@
 const buyButtons = document.querySelectorAll('.btn.btn-primary.buy');
 const soloCommande = document.getElementById("solo_part");
 const menuCommande = document.getElementById("menu_part");
+
+let accompagnements_part = document.querySelectorAll('.accompagnements_part');
+
+let boisson_part = document.querySelectorAll('.boisson_part');
 buyButtons.forEach(button => {
     buyButtonsFunc(button);
 });
+menuCommande.addEventListener('click', () => {
+    document.getElementById("menu_or_not").close();
+    document.getElementById("choose_accompagnements").showModal()
+    accompagnements_part = document.querySelectorAll('.accompagnements_part');
+    accompagnements_part.forEach(part => {
+        part.addEventListener('click', () => {
+            const name = part.querySelector('.name').textContent.replace(/^\+?\d+€\s*/, '');
+            const price = part.querySelector('.price').textContent.replace('€', '').replace('+', '').trim();
+            menu.addItem({"name": name, "price": parseFloat(price)});
+            document.getElementById("choose_accompagnements").close();
+            document.getElementById("choose_boisson").showModal();
+            boisson_part = document.querySelectorAll('.boisson_part');
+            boisson_part.forEach(boisson => {
+                boisson.addEventListener('click', () => {
+                    const name = part.querySelector('.name').textContent.replace(/^\+?\d+€\s*/, '');
+                    const price = part.querySelector('.price').textContent.replace('€', '').replace('+', '').trim();
+                    document.getElementById("choose_boisson").close();
+                    alert("Le reste du code n'a pas encore êtait fait mais basiquement c'est la même chose pour le choix de la taille de ce que tu commandes au niveau Pizza, les sauces pour les frites, ou autre. ")
+                });
+            })
 
+        });
+    });
+});
 function buyButtonsFunc(button) {
     button.addEventListener('click', () => {
         onClickBuy(button);
@@ -13,6 +40,7 @@ function buyButtonsFunc(button) {
 function onClickBuy(button) {
     const name = button.parentElement.parentElement.querySelector('.name').textContent;
     const price = button.parentElement.parentElement.querySelector('.price').textContent.replace('€', '').trim();
+    menu.addItem({"name": name, "price": parseFloat(price)});
     if (button.classList.contains('menu_commande')) {
         document.getElementById("menu_or_not").showModal();
         soloCommande.onclick = () => {
@@ -73,6 +101,9 @@ const MenuManager = {
             console.error("Invalid JSON format:", error);
         }
     },
+    convertJson: () => {
+        return {"menu": MenuManager.menu};
+    },
     getMenu: () => {
         return MenuManager.menu;
     },
@@ -122,3 +153,4 @@ function filterFunc(filter) {
         });
     }
 }
+let menu = MenuManager;

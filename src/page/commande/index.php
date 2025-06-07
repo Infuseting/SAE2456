@@ -27,7 +27,7 @@ function getFoodDescriptions($name) {
                     <img
                             src="/assets/img/menu_part.png"
                             alt="Format Menu"
-                            class="rounded-xl" />
+                            class="rounded-xl w-48" />
                 </figure>
                 <div class="card-body items-center text-center">
                     <h2 class="card-title">Menu</h2>
@@ -38,7 +38,7 @@ function getFoodDescriptions($name) {
                     <img
                             src="/assets/img/solo_part.png"
                             alt="Format Seul"
-                            class="rounded-xl" />
+                            class="rounded-xl w-48" />
                 </figure>
                 <div class="card-body items-center text-center">
                     <h2 class="card-title">Seul</h2>
@@ -52,35 +52,113 @@ function getFoodDescriptions($name) {
     </form>
 </dialog>
 
-<dialog id="choose_" class="modal">
-    <div class="modal-box w-400">
+<dialog id="choose_accompagnements" class="modal">
+    <div class="modal-box min-h-4/5 min-w-7xl">
         <form method="dialog">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
-        <h3 class="text-lg font-bold text-center">Menu ou seul ?</h3>
-        <div class="flex flex-row justify-between py-4">
-            <div id="menu_part" class="card bg-base-100 w-96 me-2 shadow-sm hover:cursor-pointer hover:bg-base-200">
+        <h3 class="text-lg font-bold text-center">Choisis un accompagnements ?</h3>
+        <div class="flex flex-row justify-between flex-wrap py-4">
+            <?php
+                $query = "WITH plats_nettoyes AS (
+  SELECT
+    PLA_NUM,
+    TRIM(REGEXP_REPLACE(PLA_NOM, '(?i)sauce.*', '')) AS PLA_NOM_CLEAN,
+    PLA_PRIX_VENTE_UNIT_HT,
+    PLA_PROMOTION,
+    PLA_DESC
+  FROM RAP_LEGUME
+  JOIN RAP_PLAT USING (PLA_NUM)
+),
+groupes AS (
+  SELECT
+    PLA_NOM_CLEAN,
+    COUNT(*) AS count_plats
+  FROM plats_nettoyes
+  GROUP BY PLA_NOM_CLEAN
+),
+rangements AS (
+  SELECT
+    p.*,
+    g.count_plats,
+    ROW_NUMBER() OVER (PARTITION BY p.PLA_NOM_CLEAN ORDER BY PLA_NUM) AS rn
+  FROM plats_nettoyes p
+  JOIN groupes g ON p.PLA_NOM_CLEAN = g.PLA_NOM_CLEAN
+)
+SELECT
+  PLA_NUM,
+  PLA_NOM_CLEAN,
+  PLA_PRIX_VENTE_UNIT_HT,
+  PLA_PROMOTION,
+  PLA_DESC,
+  CASE WHEN count_plats > 1 THEN 1 ELSE 0 END AS PLA_MULT_SIZE
+FROM rangements
+WHERE rn = 1;";
+
+                $stmt = $conn->prepare($query);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                while ($row = $result->fetch_assoc()) {
+                    $accompName = htmlspecialchars($row['PLA_NOM_CLEAN']);
+                    $accompDesc = htmlspecialchars($row['PLA_DESC']);
+                    $accompPrice = htmlspecialchars($row['PLA_PRIX_VENTE_UNIT_HT']);
+                    $accompMultipleSize = $row['PLA_MULT_TAILLE'] == 1 ? 'multiple-size' : '';
+                    echo '<div class="mt-2 card bg-base-100  me-2 shadow-sm hover:cursor-pointer hover:bg-base-200 accompagnements_part">
                 <figure class="px-10 pt-10">
                     <img
-                            src="/assets/img/menu_part.png"
-                            alt="Format Menu"
-                            class="rounded-xl" />
+                            src="/assets/img/food/accompagnements/'.str_replace(' ', '_', $accompName).'.png"
+                            alt="'. $accompName .'"
+                            class="rounded-xl w-48" />
                 </figure>
-                <div class="card-body items-center text-center">
-                    <h2 class="card-title">Menu</h2>
+                <div class="card-body items-center justify-end text-center">
+                    <h2 class="card-title name"><div class="badge badge-secondary price">+'.$accompPrice.'€</div> '.$accompName.'</h2>
                 </div>
-            </div>
-            <div id="solo_part" class="card bg-base-100 w-96 me-2 shadow-sm hover:cursor-pointer hover:bg-base-200">
+            </div>';
+                }
+
+            ?>
+
+        </div>
+
+    </div>
+    <form method="dialog" class="modal-backdrop">
+        <button class="btn-secondary">close</button>
+    </form>
+</dialog>
+
+
+<dialog id="choose_boisson" class="modal">
+    <div class="modal-box min-h-4/5 min-w-7xl">
+        <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <h3 class="text-lg font-bold text-center">Choisis un boisson ?</h3>
+        <div class="flex flex-row justify-between flex-wrap py-4">
+            <?php
+            $query = "SELECT PLA_NUM, PLA_NOM, PLA_PRIX_VENTE_UNIT_HT, PLA_PROMOTION, PLA_DESC FROM RAP_BOISSON JOIN RAP_PLAT USING (PLA_NUM);";
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()) {
+                $boisName = htmlspecialchars($row['PLA_NOM']);
+                $boisDesc = htmlspecialchars($row['PLA_DESC']);
+                $boisPrice = htmlspecialchars($row['PLA_PRIX_VENTE_UNIT_HT']);
+                $boisMultipleSize = $row['PLA_MULT_TAILLE'] == 1? 'multiple-size' : '';
+                echo '<div class="mt-2 card bg-base-100  me-2 shadow-sm hover:cursor-pointer hover:bg-base-200 boisson_part">
                 <figure class="px-10 pt-10">
                     <img
-                            src="/assets/img/solo_part.png"
-                            alt="Format Seul"
-                            class="rounded-xl" />
+                            src="/assets/img/food/boisson/'.str_replace(' ', '_', $boisName).'.png"
+                            alt="'. $boisName .'"
+                            class="rounded-xl w-48" />
                 </figure>
-                <div class="card-body items-center text-center">
-                    <h2 class="card-title">Seul</h2>
+                <div class="card-body items-center justify-end text-center">
+                    <h2 class="card-title name"><div class="badge badge-secondary price">+'.$boisPrice.'€</div> '.$boisName.'</h2>
                 </div>
-            </div>
+            </div>';
+            }
+
+            ?>
+
         </div>
 
     </div>
